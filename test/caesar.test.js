@@ -1,52 +1,63 @@
+// Write your tests here!
 const { expect } = require("chai");
-const { caesar } = require("../src/caesar");
+const caesar = require("../src/caesar");
 
-describe("caesar", () => {
-  it("should shift letters to the right, based on the typical alphabetic order", () => {
-    const actual = caesar("thinkful", 3);
-    const expected = "wklqnixo";
-    expect(actual).to.equal(expected);
-  });
-
-  it("should shift letters to the left, based on the typical alphabetic order", () => {
-    const actual = caesar("thinkful", -3);
-    const expected = "qefkhcri";
-    expect(actual).to.equal(expected);
-  });
-
-  it("should decode the message if encode is assigned 'false'", () => {
-    const actual = caesar("wklqnixo", 3, false);
-    const expected = "thinkful";
-    expect(actual).to.equal(expected);
-  });
-
-  it("should return 'false' if the shift value is not present or equal to 0", () => {
-    const actual = caesar("thinkful");
-    const expected = false;
-    expect(actual).to.equal(expected);
-  });
-
-  it("should return 'false' if the shift value is greater than 25", () => {
-    const actual = caesar("thinkful", 99);
-    const expected = false;
-    expect(actual).to.equal(expected);
-  });
-
-  it("should return 'false' if the shift value is less than -25", () => {
-    const actual = caesar("thinkful", -26);
-    const expected = false;
-    expect(actual).to.equal(expected);
-  });
-
-  it("should maintaine spaces throughout, as should other non-alphabetic symbols", () => {
-    const actual = caesar("This is a secret message!", 8);
-    const expected = "bpqa qa i amkzmb umaaiom!";
-    expect(actual).to.eql(expected);
-  });
-
-  it("should wrap around a letter to the front of the alphabet, if shifted so that it goes 'off' the alphabet and should ignore capital letters", () => {
-    const actual = caesar("BPQA qa I amkzmb umaaiom!", 8, false);
-    const expected = "this is a secret message!";
-    expect(actual).to.eql(expected);
-  });
+describe(("caesar()"), () =>{
+    it(("Should return a single word, scrambled"), ()=> {
+        const input = "thinkful";
+        const shift = 3;
+        const expected = "wklqnixo";
+        const actual = caesar(input, shift);
+        expect(actual).to.equal(expected);
+    });
+    it(("Should return a single word, scrambled opposite direction"), ()=> {
+        const input = "thinkful";
+        const shift = -3;
+        const expected = "qefkhcri";
+        const actual = caesar(input, shift);
+        expect(actual).to.equal(expected);
+    });
+    it(("Should unscramble a single word"), ()=> {
+        const input = "wklqnixo";
+        const shift = 3;
+        const expected = "thinkful";
+        const encode = false;
+        const actual = caesar(input, shift, encode);
+        expect(actual).to.equal(expected);
+    });
+    it(("Can scramble multiple word inputs"), ()=> {
+        const input = "This is a secret message!";
+        const shift = 8;
+        const expected = "bpqa qa i amkzmb umaaiom!";
+        const actual = caesar(input, shift);
+        expect(actual).to.equal(expected);
+    });
+    it(("Can unscramble multiple word inputs"), ()=> {
+        const input = "BPQA qa I amkzmb umaaiom!";
+        const shift = 8;
+        const expected = "this is a secret message!";
+        const encode = false;
+        const actual = caesar(input, shift, encode);
+        expect(actual).to.equal(expected);
+    });
+    it(("Return false if no shift is given"), ()=> {
+        const input = "thinkful";
+        const expected = false;
+        const actual = caesar(input);
+        expect(actual).to.equal(expected);
+    });
+    it(("Return false if shift is too large"), ()=> {
+        const input = "thinkful";
+        const expected = false;
+        const shift = 99;
+        const actual = caesar(input, shift);
+        expect(actual).to.equal(expected);
+    });
+    it(("Return false if shift is too small"), ()=> {
+        const input = "thinkful";
+        const expected = false;
+        const shift = -26;
+        const actual = caesar(input, shift);
+        expect(actual).to.equal(expected);
+    });
 });

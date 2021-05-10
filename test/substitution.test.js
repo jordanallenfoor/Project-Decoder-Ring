@@ -1,51 +1,62 @@
+// Write your tests here!
 const { expect } = require("chai");
-const { substitution } = require("../src/substitution");
-
-describe("substitution", () => {
-  it("should transpose letters from standard alphabet to the substitution alphabet", () => {
-    const actual = substitution("thinkful", "xoyqmcgrukswaflnthdjpzibev");
+const substitution = require("../src/substitution");
+describe("substitution()", () => {
+  it("Scramble a single word", () => {
+    const input = "thinkful";
+    const alphabet = "xoyqmcgrukswaflnthdjpzibev";
     const expected = "jrufscpw";
+    const actual = substitution(input, alphabet);
     expect(actual).to.equal(expected);
   });
-
-  it("should maintain spaces throughout and capital letters should be ignored", () => {
-    const actual = substitution(
-      "You are an excellent spy",
-      "xoyqmcgrukswaflnthdjpzibev"
-    );
+  it("Should scramble multiple words", () => {
+    const input = "You are an excellent spy";
+    const alphabet = "xoyqmcgrukswaflnthdjpzibev";
     const expected = "elp xhm xf mbymwwmfj dne";
-    expect(actual).to.eql(expected);
+    const actual = substitution(input, alphabet);
+    expect(actual).to.equal(expected);
   });
-
-  it("should cipher deciphered message when encode equals false", () => {
-    const actual = substitution(
-      "jrufscpw",
-      "xoyqmcgrukswaflnthdjpzibev",
-      false
-    );
+  it("Unscramble a single word", () => {
+    const input = "jrufscpw";
+    const alphabet = "xoyqmcgrukswaflnthdjpzibev";
     const expected = "thinkful";
+    const encode = false;
+    const actual = substitution(input, alphabet, encode);
     expect(actual).to.equal(expected);
   });
-
-  it("should be able to decipher letters as well as specific characters such as #, $, *, etc", () => {
-    const actual = substitution("message", "$wae&zrdxtfcygvuhbijnokmpl");
+  it("Scramble using symbols in the alphabet", () => {
+    const input = "message";
+    const alphabet = "$wae&zrdxtfcygvuhbijnokmpl";
     const expected = "y&ii$r&";
+    const actual = substitution(input, alphabet);
     expect(actual).to.equal(expected);
   });
-
-  it("should cipher deciphered message when encode equals false, when given specific characters such as #, $, *, etc", () => {
-    const actual = substitution("y&ii$r&", "$wae&zrdxtfcygvuhbijnokmpl", false);
+  it("Unscramble using symbols in the alphabet", () => {
+    const input = "4y&ii$r&";
+    const alphabet = "$wae&zrdxtfcygvuhbijnokmpl";
     const expected = "message";
+    const encode = false;
+    const actual = substitution(input, alphabet, encode);
     expect(actual).to.equal(expected);
   });
-
-  it("alphabet parameter should be exact 26 characters of a string, if not return false ", () => {
-    const actual = substitution("thinkful", "short");
-    expect(actual).to.be.false;
+  it("Return false if the alphabet is too short", () => {
+    const input = "thinkful";
+    const alphabet = "short";
+    const expected = false;
+    const actual = substitution(input, alphabet);
+    expect(actual).to.equal(expected);
   });
-
-  it("alphabet parameter should be unique. Otherwise, it should return false", () => {
-    const actual = substitution("thinkful", "abcabcabcabcabcabcabcabcyz");
-    expect(actual).to.be.false;
+  it("Return false if there are repeats in the alphabet", () => {
+    const input = "thinkful";
+    const alphabet = "abcabcabcabcabcabcabcabcyz";
+    const expected = false;
+    const actual = substitution(input, alphabet);
+    expect(actual).to.equal(expected);
   });
-}); // Write your tests here!
+  it("Return false if there is no alphabet", () => {
+    const input = "thinkful";
+    const expected = false;
+    const actual = substitution(input);
+    expect(actual).to.equal(expected);
+  });
+});
